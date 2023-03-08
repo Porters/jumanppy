@@ -1,0 +1,5 @@
+[flake8]
+extend-ignore = E203,E501,E722,E731,W293,W605
+max-line-length = 120
+max-complexity = 10
+exclude = ./source/recommendations/evaluate/entries_statistics, ./source/recommendations/nn_model/train/pretrain/japanese_pretrained_models
