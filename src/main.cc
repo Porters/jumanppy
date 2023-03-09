@@ -1,12 +1,14 @@
 // Inspired from https://github.com/eiennohito/jumanpp-t9
 
+#include <algorithm>
 #include <string>
 #include <list>
 #include <stdexcept>
 #include <iostream>
 #include "core/env.h"
 #include "core/analysis/analysis_result.h"
-#include "./main.h"
+#include "jumandic/shared/juman_format.h"
+#include "main.h"
 
 void parse(const jumanpp::core::analysis::Analyzer &analyzer, std::list<Morpheme> &morphemes)
 {
@@ -28,22 +30,24 @@ void parse(const jumanpp::core::analysis::Analyzer &analyzer, std::list<Morpheme
             return;
         }
         Morpheme morpheme;
-        morpheme.surface = fields.surface[walker];
-        morpheme.reading = fields.reading[walker];
-        morpheme.pos = fields.pos[walker];
-        morpheme.subpos = fields.subpos[walker];
-        morpheme.conjForm = fields.conjForm[walker];
-        morpheme.conjType = fields.conjType[walker];
-        morpheme.baseForm = fields.baseform[walker];
-        morpheme.pronunciation = fields.surface[walker];
+        morpheme.surface = fields.surface[walker].str().c_str();
+        morpheme.reading = fields.reading[walker].str().c_str();
+        morpheme.pos = fields.pos[walker].str().c_str();
+        morpheme.subpos = fields.subpos[walker].str().c_str();
+        morpheme.conjForm = fields.conjForm[walker].str().c_str();
+        morpheme.conjType = fields.conjType[walker].str().c_str();
+        morpheme.baseForm = fields.baseform[walker].str().c_str();
+        morpheme.pronunciation = fields.surface[walker].str().c_str();
         std::cout << morpheme.surface << " " << morpheme.pos << std::endl;
         morphemes.push_back(morpheme);
     }
 }
 
-std::list<Morpheme> analyze(const char * model, const char * text)
+std::list<Morpheme> do_analyze(const char * model, const char * text)
 {
     jumanpp::core::JumanppEnv env;
+    std::cout << "Model: " << model << std::endl;
+    std::cout << "Text: " << text << std::endl;
     if (!env.loadModel(jumanpp::StringPiece::fromCString(model)))
     {
         throw std::runtime_error("Failed to load Juman++ model");
@@ -73,6 +77,15 @@ std::list<Morpheme> analyze(const char * model, const char * text)
     return morphemes;
 }
 
+Morpheme * analyze(const char * model, const char * text)
+{
+    auto morphemes = do_analyze(model, text);
+    auto morphemes_as_array = new Morpheme[morphemes.size()];
+    std::copy(morphemes.begin(), morphemes.end(), morphemes_as_array);
+    return morphemes_as_array;
+}
+
+// To test
 int main() {
     analyze("/Users/rav/repos/github/jumanppy/jumandic.jppmdl", "相手の名前はよく分かりませんでした、すみません。");
 }
