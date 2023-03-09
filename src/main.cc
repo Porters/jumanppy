@@ -41,7 +41,7 @@ void parse(const jumanpp::core::analysis::Analyzer &analyzer, std::list<Morpheme
     }
 }
 
-std::list<Morpheme> analyze(const char * model, const std::string &text)
+std::list<Morpheme> analyze(const char * model, const char * text)
 {
     jumanpp::core::JumanppEnv env;
     if (!env.loadModel(jumanpp::StringPiece::fromCString(model)))
@@ -63,7 +63,8 @@ std::list<Morpheme> analyze(const char * model, const std::string &text)
     }
 
     std::list<Morpheme> morphemes;
-    if (!analyzer.analyze(text))
+    std::string text_as_string = std::string(text);
+    if (!analyzer.analyze(text_as_string))
     {
         return morphemes;
     }

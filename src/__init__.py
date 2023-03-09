@@ -15,7 +15,7 @@ class Morpheme(ctypes.Structure):
     ]
 
 
-libjumanppy = ctypes.CDLL(os.path.abspath("/Users/rav/repos/github/jumanppy/build/src/libjumanppy.so"))
+libjumanppy = ctypes.CDLL(os.path.abspath("/Users/rav/repos/github/jumanppy/lib/libjumanppy.dylib"))
 
 analyze = libjumanppy.analyze
 analyze.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
