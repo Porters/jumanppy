@@ -135,4 +135,5 @@ dmypy.json
 # Node
 node_modules
 
-jumandic.jppmdl
+*.jppmdl
+setup.py
