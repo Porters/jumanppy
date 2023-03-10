@@ -45,6 +45,4 @@ Tokenization does not work as expected:
 ん 助動詞
 。 特殊
 ```
-Morpheme created byt not added to vector
-Python layer not tested
 Paths are hardcoded

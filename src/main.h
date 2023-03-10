@@ -4,17 +4,18 @@ extern "C" {
 
 struct Morpheme
 {
-    const char * surface;
-    const char * reading;
-    const char * pos;
-    const char * subpos;
-    const char * conjForm;
-    const char * conjType;
-    const char * baseForm;
-    const char * pronunciation;
+    std::string surface;
+    std::string reading;
+    std::string pos;
+    std::string subpos;
+    std::string conjForm;
+    std::string conjType;
+    std::string baseForm;
+    std::string pronunciation;
 };
 
-Morpheme * analyze(const char * model, const char * text);
+const char * analyze(const char * model, const char * text);
+void free_memory(const char* ptr);
 
 #ifdef __cplusplus
 }
