@@ -113,11 +113,6 @@ const char *analyze(const char *model, const char *text)
     return jsonCString;
 }
 
-void free_memory(const char *ptr)
-{
-    delete[] ptr;
-}
-
 // To test
 int main()
 {

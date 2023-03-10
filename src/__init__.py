@@ -24,9 +24,6 @@ libjumanppy = ctypes.CDLL(os.path.abspath("/Users/rav/repos/github/jumanppy/lib/
 libjumanppy.analyze.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
 libjumanppy.analyze.restype = ctypes.c_char_p
 
-libjumanppy.free_memory.argtypes = [ctypes.c_char_p]
-libjumanppy.free_memory.restype = None
-
 
 def analyze(model: str, text: str) -> List[Morpheme]:
     result = libjumanppy.analyze(model, text)

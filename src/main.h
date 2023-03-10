@@ -15,7 +15,6 @@ struct Morpheme
 };
 
 const char * analyze(const char * model, const char * text);
-void free_memory(const char* ptr);
 
 #ifdef __cplusplus
 }
