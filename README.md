@@ -46,3 +46,4 @@ Tokenization does not work as expected:
 。 特殊
 ```
 Paths are hardcoded
+poetry build does not package the made/dl dependencies in the archives in dist
