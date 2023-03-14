@@ -137,3 +137,5 @@ node_modules
 
 *.jppmdl
 setup.py
+/tmp/
+/bin/

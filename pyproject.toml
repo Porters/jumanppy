@@ -6,13 +6,12 @@ authors = ["Ravaka Razafimanantsoa <ravaka.razafimanantsoa@porters.jp>"]
 license = "MIT"
 readme = "README.md"
 include = [
-    {path = "lib/jumandic.jppmdl", format = "wheel"},
-    {path = "lib/libjumanppy.dylib", format = "wheel"}
+    { path = "jumanpp/**", format = "sdist" },
+    { path = "bin/**", format = ["sdist", "wheel"] }
 ]
 
 [tool.poetry.build] 
-script = "build.py" 
-generate-setup-file = true 
+script = "build.py"
 
 [tool.poetry.dependencies]
 python = "^3.9"
