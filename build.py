@@ -29,9 +29,9 @@ def getModel() -> None:
     print("getModel start")
     build_dir = "tmp"
     archive_path = f"{build_dir}/jumanpp.tar.xz"
-    model_path = f"{build_dir}/jumanpp-2.0.0-rc3/model/jumandic.jppmdl"
+    model_path = f"{build_dir}/jumandic-rnn.model"
     shell(["mkdir", "-p", build_dir]).wait()
-    url = "https://github.com/ku-nlp/jumanpp/releases/download/v2.0.0-rc3/jumanpp-2.0.0-rc3.tar.xz"
+    url = "https://github.com/ku-nlp/jumanpp-jumandic/releases/download/2020.08.12/jumandic-rnn.model.tar.xz"
     response = get(url)
     open(archive_path, "wb").write(response.content)
     unpack_archive(filename=archive_path, format="xztar", extract_dir=build_dir)
@@ -57,3 +57,9 @@ def build(setup_kwargs: dict):
         }
     )
     return setup_kwargs
+
+
+if __name__ == "__main__":
+    makeJumanpp()
+    getModel()
+    shell(["./jumanppy/jumanppy"]).wait()

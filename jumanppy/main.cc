@@ -16,7 +16,7 @@
 
 auto defaultConf = jumanpp::jumandic::JumanppConf();
 
-void parse(const jumanpp::core::analysis::Analyzer &analyzer, std::list<Morpheme> &morphemes)
+nlohmann::json parse(const jumanpp::core::analysis::Analyzer &analyzer)
 {
     jumanpp::core::analysis::AnalysisResult result;
     jumanpp::core::analysis::AnalysisPath path;
@@ -28,29 +28,32 @@ void parse(const jumanpp::core::analysis::Analyzer &analyzer, std::list<Morpheme
     {
         throw std::runtime_error("Failed initialize parse");
     }
+    nlohmann::json morphemes = nlohmann::json::array();
     while (path.nextBoundary())
     {
         jumanpp::core::analysis::ConnectionPtr cptr{};
         if (
             !path.nextNode(&cptr) || !output.locate(cptr.latticeNodePtr(), &walker) || !walker.next())
         {
-            std::cout << "SKIP" << std::endl;
-            return;
+            break;
         }
-        Morpheme morpheme;
-        morpheme.surface = fields.surface[walker].str();
-        morpheme.reading = fields.reading[walker].str();
-        morpheme.pos = fields.pos[walker].str();
-        morpheme.subpos = fields.subpos[walker].str();
-        morpheme.conjForm = fields.conjForm[walker].str();
-        morpheme.conjType = fields.conjType[walker].str();
-        morpheme.baseForm = fields.baseform[walker].str();
-        morpheme.pronunciation = fields.surface[walker].str();
+        nlohmann::json morpheme = {
+            {"surface", fields.surface[walker].str()},
+            {"reading", fields.reading[walker].str()},
+            {"pos", fields.pos[walker].str()},
+            {"subpos", fields.subpos[walker].str()},
+            {"conjForm", fields.conjForm[walker].str()},
+            {"conjType", fields.conjType[walker].str()},
+            {"baseForm", fields.baseform[walker].str()},
+            {"pronunciation", fields.surface[walker].str()}
+        };
+        
         morphemes.push_back(morpheme);
     }
+    return morphemes;
 }
 
-std::list<Morpheme> doAnalyze(const char *model, const char *text)
+nlohmann::json doAnalyze(const char *model, const char *text)
 {
     jumanpp::core::JumanppEnv env;
     if (!env.loadModel(jumanpp::StringPiece::fromCString(model)))
@@ -58,6 +61,7 @@ std::list<Morpheme> doAnalyze(const char *model, const char *text)
         throw std::runtime_error("Failed to load Juman++ model");
     }
 
+    // Default 5 6 1/5
     env.setBeamSize(defaultConf.beamSize);
     env.setGlobalBeam(defaultConf.globalBeam, defaultConf.rightCheck, defaultConf.rightBeam);
 
@@ -72,42 +76,18 @@ std::list<Morpheme> doAnalyze(const char *model, const char *text)
         throw std::runtime_error("Failed to make Juman++ analyzer");
     }
 
-    std::list<Morpheme> morphemes;
     auto textAsString = std::string(text);
     if (!analyzer.analyze(textAsString))
     {
-        return morphemes;
+        return nlohmann::json::array();
     }
-    parse(analyzer, morphemes);
-
-    return morphemes;
-}
-
-nlohmann::json listToJson(std::list<Morpheme> &morphemes)
-{
-    nlohmann::json jsonArray = nlohmann::json::array();
-    for (const auto &morpheme : morphemes)
-    {
-        nlohmann::json jsonObject = {
-            {"surface", morpheme.surface},
-            {"reading", morpheme.reading},
-            {"pos", morpheme.pos},
-            {"subpos", morpheme.subpos},
-            {"conjForm", morpheme.conjForm},
-            {"conjType", morpheme.conjType},
-            {"baseForm", morpheme.baseForm},
-            {"pronunciation", morpheme.pronunciation}};
-        jsonArray.push_back(jsonObject);
-    }
-    return jsonArray;
+    return parse(analyzer);
 }
 
 const char *analyze(const char *model, const char *text)
 {
     jumanpp::util::logging::CurrentLogLevel = jumanpp::util::logging::Level::Warning;
-    auto morphemes = doAnalyze(model, text);
-    nlohmann::json json = listToJson(morphemes);
-    std::string jsonString = json.dump();
+    std::string jsonString = doAnalyze(model, text).dump();
     char *jsonCString = new char[jsonString.size() + 1];
     std::strcpy(jsonCString, jsonString.c_str());
     return jsonCString;
@@ -116,5 +96,5 @@ const char *analyze(const char *model, const char *text)
 // To test
 int main()
 {
-    std::cout << analyze("./jumandic.jppmdl", "相手の名前はよく分かりませんでした、すみません。") << std::endl;
+    std::cout << analyze("./jumanppy/jumandic.jppmdl", "相手の名前はよく分かりませんでした、すみません。") << std::endl;
 }
