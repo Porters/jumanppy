@@ -7,11 +7,13 @@ license = "MIT"
 readme = "README.md"
 include = [
     { path = "jumanpp/**", format = "sdist" },
-    { path = "bin/**", format = ["sdist", "wheel"] }
+    { path = "jumanppy/jumandic.jppmdl" },
+    { path = "jumanppy/libjumanppy.dylib", format = "wheel" },
 ]
 
 [tool.poetry.build] 
 script = "build.py"
+generate-setup-file = true
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -29,5 +31,5 @@ setuptools = "^67.6.0"
 requests = "^2.28.2"
 
 [build-system]
-requires = ["poetry-core", "cmake", "setuptools", "requests"]
+requires = ["poetry-core>=1.5.2", "cmake", "setuptools", "requests"]
 build-backend = "poetry.core.masonry.api"

@@ -19,7 +19,7 @@ class Morpheme:
         return f"{self.surface}\t{self.pronunciation}\t{self.baseForm}\t{self.pos}\t{self.subpos}\t{self.conjForm}\t{self.conjType}\t{self.reading}"
 
 
-libjumanppy = ctypes.CDLL(relpath("./lib/libjumanppy.dylib"))
+libjumanppy = ctypes.CDLL(relpath("./jumanppy/libjumanppy.dylib"))
 
 libjumanppy.analyze.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
 libjumanppy.analyze.restype = ctypes.c_char_p
@@ -32,4 +32,6 @@ def analyze(model: str, text: str) -> List[Morpheme]:
 
 
 if __name__ == "__main__":
-    print(analyze(relpath("jumandic.jppmdl").encode('utf8'), "相手の名前はよく分かりませんでした、すみません。".encode('utf8')))
+    model_path = relpath("./jumanppy/jumandic.jppmdl")
+    print(model_path)
+    print(analyze(model_path.encode('utf8'), "相手の名前はよく分かりませんでした、すみません。".encode('utf8')))

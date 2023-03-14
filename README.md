@@ -6,17 +6,14 @@ jumanppy is a package including jumanpp. No additional installation is needed.
 
 ## Local development
 
-Get jumandic.jppmdl from a archive of a release of jumanpp
 
 ```bash
 git submodule init
 git submodule update
-mkdir build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/Users/rav/repos/github/jumanppy/lib
-make install
-poetry install
+poetry build
 ```
+
+`jumanppy/jumanppy` allows to test the library.
 
 ## Current state
 
@@ -45,5 +42,3 @@ Tokenization does not work as expected:
 ん 助動詞
 。 特殊
 ```
-Paths are hardcoded
-poetry build does not package the made/dl dependencies in the archives in dist

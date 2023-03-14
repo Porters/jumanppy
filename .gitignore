@@ -136,6 +136,7 @@ dmypy.json
 node_modules
 
 *.jppmdl
+*.dylib
+jumanppy/jumanppy
+jumanppylib/jumanppy.dylib
 setup.py
-/tmp/
-/bin/

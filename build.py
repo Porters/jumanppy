@@ -3,8 +3,7 @@ from requests import get
 from shutil import unpack_archive, move
 from setuptools import find_namespace_packages
 
-target_dir: str = "lib"
-bin_dir: str = "bin"
+target_dir: str = "jumanppy"
 
 
 def makeJumanpp() -> None:
@@ -18,7 +17,7 @@ def makeJumanpp() -> None:
             "-B",
             build_dir,
             "-DCMAKE_BUILD_TYPE=Release",
-            f"-DCMAKE_INSTALL_PREFIX={bin_dir}",
+            f"-DCMAKE_INSTALL_PREFIX={target_dir}",
         ]
     ).wait()
     shell(["make", "-C", build_dir, "install"]).wait()
@@ -36,14 +35,13 @@ def getModel() -> None:
     response = get(url)
     open(archive_path, "wb").write(response.content)
     unpack_archive(filename=archive_path, format="xztar", extract_dir=build_dir)
-    move(model_path, f"{bin_dir}/jumandic.jppmdl")
+    move(model_path, f"{target_dir}/jumandic.jppmdl")
     shell(["rm", "-rf", build_dir]).wait()
     print("getModel done")
 
 
 def build(setup_kwargs: dict):
     print("Starting custom build.py")
-    shell(["mkdir", "-p", target_dir]).wait()
     makeJumanpp()
     getModel()
     packages = find_namespace_packages()
@@ -53,13 +51,9 @@ def build(setup_kwargs: dict):
             "exclude": ["dist", "build"],
             "include_package_data": True,
             "package_data": {
-                "jumanppy": ["*.py"],
+                "jumanppy": ["*.py", "libjumanppy.dylib", "jumandic.jppmdl"],
                 "jumanpp": ["**"],
-                bin_dir: ["**"],
             },
-            "data_files": [
-                (bin_dir, [f"{bin_dir}/libjumanppy.dylib" f"{bin_dir}/jumandic.jppmdl"])
-            ],
         }
     )
-    print(setup_kwargs)
+    return setup_kwargs

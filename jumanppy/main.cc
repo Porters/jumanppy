@@ -116,5 +116,5 @@ const char *analyze(const char *model, const char *text)
 // To test
 int main()
 {
-    std::cout << analyze("/Users/rav/repos/github/jumanppy/jumandic.jppmdl", "相手の名前はよく分かりませんでした、すみません。") << std::endl;
+    std::cout << analyze("./jumandic.jppmdl", "相手の名前はよく分かりませんでした、すみません。") << std::endl;
 }
