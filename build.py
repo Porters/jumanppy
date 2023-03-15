@@ -1,7 +1,8 @@
-from subprocess import Popen as shell
-from requests import get
-from shutil import unpack_archive, move
 from os.path import isfile
+from shutil import move, unpack_archive
+from subprocess import Popen as shell
+
+from requests import get
 from setuptools import find_namespace_packages
 
 target_dir: str = "jumanppy"
@@ -9,20 +10,21 @@ target_dir: str = "jumanppy"
 
 def makeJumanpp() -> None:
     print("makeJumanpp start")
-    build_dir = "tmp"
-    shell(["mkdir", "-p", build_dir]).wait()
-    shell(
-        [
-            "cmake",
-            ".",
-            "-B",
-            build_dir,
-            "-DCMAKE_BUILD_TYPE=Release",
-            f"-DCMAKE_INSTALL_PREFIX={target_dir}",
-        ]
-    ).wait()
-    shell(["make", "-C", build_dir, "install"]).wait()
-    shell(["rm", "-rf", build_dir]).wait()
+    if not isfile(f"{target_dir}/libjumanppy.dylib"):
+        build_dir = "tmp"
+        shell(["mkdir", "-p", build_dir]).wait()
+        shell(
+            [
+                "cmake",
+                ".",
+                "-B",
+                build_dir,
+                "-DCMAKE_BUILD_TYPE=Release",
+                f"-DCMAKE_INSTALL_PREFIX={target_dir}",
+            ]
+        ).wait()
+        shell(["make", "-C", build_dir, "install"]).wait()
+        shell(["rm", "-rf", build_dir]).wait()
     print("makeJumanpp done")
 
 

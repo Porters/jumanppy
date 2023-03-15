@@ -6,8 +6,6 @@ export CODEARTIFACT_REPOSITORY_URL=$(aws codeartifact get-repository-endpoint --
 export CODEARTIFACT_USER=aws
 export CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain $DOMAIN --query 'authorizationToken' --output text)
 
-poetry build
-
 # Todo: use poetry publish when aws support.
 # (currently it return 401 error)
 pip install twine
