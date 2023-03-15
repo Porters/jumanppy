@@ -10,4 +10,5 @@ export CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --doma
 # (currently it return 401 error)
 pip install twine
 aws codeartifact login --tool twine --domain $DOMAIN --repository $REPOS
-twine upload --repository codeartifact dist/*
+
+\twine upload --repository codeartifact dist/*
