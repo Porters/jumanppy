@@ -1,9 +1,11 @@
 import ctypes
-from os.path import relpath
+from os.path import dirname, join
 from json import loads
 from typing import List
 
-model_path = relpath("./jumanppy/jumandic.jppmdl")
+model_path = join(dirname(__file__), "jumandic.jppmdl")
+library_path = join(dirname(__file__), "libjumanppy.dylib")
+
 
 class Morpheme:
     def __init__(self, json):
@@ -20,7 +22,7 @@ class Morpheme:
         return f"{self.surface}\t{self.pronunciation}\t{self.baseForm}\t{self.pos}\t{self.subpos}\t{self.conjForm}\t{self.conjType}\t{self.reading}"
 
 
-libjumanppy = ctypes.CDLL(relpath("./jumanppy/libjumanppy.dylib"))
+libjumanppy = ctypes.CDLL(library_path)
 
 libjumanppy.analyze.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
 libjumanppy.analyze.restype = ctypes.c_char_p
