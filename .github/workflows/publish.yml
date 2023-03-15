@@ -21,6 +21,7 @@ jobs:
         env:
           CIBW_ARCHS_MACOS: x86_64 arm64
           CIBW_BUILD_VERBOSITY: 3
+          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9"
       - uses: actions/upload-artifact@v3
         with:
           path: ./wheelhouse/*.whl
