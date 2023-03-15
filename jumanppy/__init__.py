@@ -3,6 +3,7 @@ from os.path import relpath
 from json import loads
 from typing import List
 
+model_path = relpath("./jumanppy/jumandic.jppmdl")
 
 class Morpheme:
     def __init__(self, json):
@@ -25,13 +26,12 @@ libjumanppy.analyze.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
 libjumanppy.analyze.restype = ctypes.c_char_p
 
 
-def analyze(model: str, text: str) -> List[Morpheme]:
-    result = libjumanppy.analyze(model, text)
+def analyze(text: str, model: str = model_path) -> List[Morpheme]:
+    result = libjumanppy.analyze(model.encode('utf8'), text.encode('utf8'))
     morphemes = [Morpheme(morpheme) for morpheme in loads(result)]
     return morphemes
 
 
 if __name__ == "__main__":
-    model_path = relpath("./jumanppy/jumandic.jppmdl")
     print(model_path)
-    print(analyze(model_path.encode('utf8'), "相手の名前はよく分かりませんでした、すみません。".encode('utf8')))
+    print(analyze("相手の名前はよく分かりませんでした、すみません。"))
