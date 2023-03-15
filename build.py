@@ -1,6 +1,7 @@
 from subprocess import Popen as shell
 from requests import get
 from shutil import unpack_archive, move
+from os.path import isfile
 from setuptools import find_namespace_packages
 
 target_dir: str = "jumanppy"
@@ -29,14 +30,16 @@ def getModel() -> None:
     print("getModel start")
     build_dir = "tmp"
     archive_path = f"{build_dir}/jumanpp.tar.xz"
-    model_path = f"{build_dir}/jumandic-rnn.model"
-    shell(["mkdir", "-p", build_dir]).wait()
-    url = "https://github.com/ku-nlp/jumanpp-jumandic/releases/download/2020.08.12/jumandic-rnn.model.tar.xz"
-    response = get(url)
-    open(archive_path, "wb").write(response.content)
-    unpack_archive(filename=archive_path, format="xztar", extract_dir=build_dir)
-    move(model_path, f"{target_dir}/jumandic.jppmdl")
-    shell(["rm", "-rf", build_dir]).wait()
+    archive_model_path = f"{build_dir}/jumandic-rnn.model"
+    final_model_path = f"{target_dir}/jumandic.jppmdl"
+    if not isfile(final_model_path):
+        shell(["mkdir", "-p", build_dir]).wait()
+        url = "https://github.com/ku-nlp/jumanpp-jumandic/releases/download/2020.08.12/jumandic-rnn.model.tar.xz"
+        response = get(url)
+        open(archive_path, "wb").write(response.content)
+        unpack_archive(filename=archive_path, format="xztar", extract_dir=build_dir)
+        move(archive_model_path, final_model_path)
+        shell(["rm", "-rf", build_dir]).wait()
     print("getModel done")
 
 

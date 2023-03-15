@@ -1,8 +1,8 @@
-# jumanppy WORK IN PROGRESS
+# jumanppy
 
 ## Description
 
-jumanppy is a package including jumanpp. No additional installation is needed.
+jumanppy is a package including jumanpp. No additional installation is needed. Package too big to be uploaded to pypi (about 340 MB).
 
 ## Local development
 
