@@ -1,5 +1,10 @@
 # jumanppy
 
+## Problems to solve
+
+- When installing from sdist, jumanppp is not installed.
+- Making wheels for multiple configurations
+
 ## Description
 
 jumanppy is a package including jumanpp. No additional installation is needed. Package too big to be uploaded to pypi (about 340 MB).
